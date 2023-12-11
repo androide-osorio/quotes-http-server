@@ -14,4 +14,3 @@ RUN chmod +x quotes-http-server
 
 EXPOSE $PORT
 CMD ["/app/quotes-http-server"]
-

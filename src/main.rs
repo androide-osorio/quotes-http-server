@@ -1,15 +1,17 @@
 use axum::http;
 use axum::routing::{get, Router};
 
+use tokio::net::TcpListener;
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let port = 3000;
+    let port = std::env::var("PORT").unwrap_or_else(|_| "3000".to_string());
     let address = format!("0.0.0.0:{port}");
 
     let app = Router::new()
         .route("/", get(health));
 
-    let listener = tokio::net::TcpListener::bind(address).await.unwrap();
+    let listener = TcpListener::bind(address).await.unwrap();
     axum::serve(listener, app).await.unwrap();
     Ok(())
 }
