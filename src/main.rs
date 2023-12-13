@@ -1,4 +1,4 @@
-use axum::routing::{Router, get, post};
+use axum::routing::{Router, get, post, put};
 use sqlx::postgres::PgPoolOptions;
 use tokio::net::TcpListener;
 
@@ -18,6 +18,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let app = Router::new()
         .route("/", get(handlers::health))
         .route("/quotes", post(handlers::create_quote))
+        .route("/quotes", get(handlers::read_quotes))
+        .route("/quotes/:id", put(handlers::update_quote))
         .with_state(pool);
 
     let listener = TcpListener::bind(address).await.unwrap();
